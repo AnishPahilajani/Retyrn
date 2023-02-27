@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 
 from api.utils.users import get_users_utils, get_user_utils, get_user_by_email_utils, create_user_utils
 from database.database_engine import get_db
-#from api.crud.user import get_user, get_user_by_email, get_users, create_user
 
 # termianl command to run this code
 # uvicorn users:app --reload 
@@ -36,3 +35,9 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+@router.post("/users", response_model=User, status_code=201)
+async def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_email_utils(db=db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email is already registered")
+    return create_user_utils(db=db, user=user)
