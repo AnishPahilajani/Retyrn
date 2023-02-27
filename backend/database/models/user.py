@@ -43,8 +43,7 @@ class User(Timestamp, Base):
 class TruckDriver(Timestamp, Base):
     __tablename__ = "truck_drivers"
     id = Column(Integer, primary_key=True, index = True) 
-    S3_link = Column(URLType, nullable = True)
-    TEST_link = Column(URLType, nullable = True)
+    S3_link = Column(String(), nullable = True)
     
     user_id = Column(Integer, ForeignKey("users.id"), nullable = False)
     owner = relationship("User", back_populates="truck_driver") # access using user.profile.<whatever> # profile needs to be same name as in User table
