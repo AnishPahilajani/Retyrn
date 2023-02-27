@@ -1,0 +1,39 @@
+[
+    {
+        "email":"a@gmail.com",
+        "first_name":"anish",
+        "last_name": "P",
+        "password": "123",
+        "phone_number": "123",
+        "S3_link": "a.com",
+        "address": "ddf",
+        "created_at": "2021-10-03 01:00:00-06",
+        "updated_at": "2021-10-03 01:00:00-06"
+
+    },
+    {
+        "email":"n@gmail.com",
+        "first_name":"Nick",
+        "last_name": "n",
+        "password": "456",
+        "phone_number": "789",
+        "S3_link": "a.com",
+        "address": "ddf",
+        "created_at": "2021-10-03 01:00:00-06",
+        "updated_at": "2021-10-03 01:00:00-06"
+    
+    },
+    {
+        "email":"j@gmail.com",
+        "first_name":"jen",
+        "last_name": "j",
+        "password": "789",
+        "phone_number": "789",
+        "S3_link": "a.com",
+        "address": "ddf",
+        "created_at": "2021-10-03 01:00:00-06",
+        "updated_at": "2021-10-03 01:00:00-06"
+    
+    }
+
+]
