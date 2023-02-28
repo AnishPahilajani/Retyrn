@@ -10,16 +10,18 @@ from ..database_engine import Base
 from .mixins import Timestamp
 
 
-# PREFERED Make your changes then run teh following 2 commands
+# PREFERED Make your changes in alambic/versions/ then run teh following 2 commands
+# WARNING: DB is deleted
 # alembic downgrade base
 # alembic upgrade head
 
-# if you append to the database then re RUN
+# if make changes to THIS file
 # alembic revision --autogenerate
 # alembic upgrade head
 # A new file will be created with the updated fields
 
 # delete any revesion files under alembic/version DO NOT DO THIS Not all data will be regenerated
+# alembic downgrade base
 # re run alembic revision --autogenerate
 
 

@@ -24,7 +24,7 @@ router = fastapi.APIRouter()
         
 @router.get("/users", response_model=List[User])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = get_users_utils(db, skip=skip, limit=limit)
+    users = get_users_utils(db=db, skip=skip, limit=limit)
     return users
 
 
