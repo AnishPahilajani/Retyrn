@@ -13,9 +13,11 @@ from .mixins import Timestamp
 # PREFERED Make your changes in alambic/versions/ then run teh following 2 commands
 # WARNING: DB is deleted
 # alembic downgrade base
+# make changes
 # alembic upgrade head
 
 # if make changes to THIS file
+# make changes to this file
 # alembic revision --autogenerate
 # alembic upgrade head
 # A new file will be created with the updated fields
@@ -35,7 +37,7 @@ class User(Timestamp, Base):
     password = Column(String(), index = True, nullable=True)
     phone_number = Column(String(), index = True, nullable=True)
     S3_link = Column(String(), nullable = True)
-    address = Column(String(), nullable = True)
+    address = Column(Text(), nullable = True)
     
     # uselist = False => one to one relation
     truck_driver = relationship("TruckDriver", back_populates = "owner", uselist = False) # "owner" needs to be same name as TruckDriver table

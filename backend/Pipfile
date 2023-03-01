@@ -11,6 +11,7 @@ psycopg2-binary = "*"
 sqlalchemy-utils = "*"
 alembic = "*"
 psycopg2 = "*"
+asyncpg = "*"
 
 [dev-packages]
 
