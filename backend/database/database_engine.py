@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
-sql_settings = {"qguser":"anish", "pgpassword":"anish", "pghost":"localhost", "pgport":5432, "pgdb":"retyrn_db"}
 # GRANT ALL ON SCHEMA public TO anish;
 # grant usage on schema public to anis;
 # grant all priviliges on database retyrn_db to anish
