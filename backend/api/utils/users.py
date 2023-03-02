@@ -6,12 +6,12 @@ from database.models.user import User
 from pydantic_scheme.user import UserCreate
 
 
-# def get_user_utils(db: Session, user_id: int):
-#     return db.query(User).filter(User.id == user_id).first()
-async def get_user_utils(db: AsyncSession, user_id: int):
-    query = select(User).where(User.id == user_id)
-    result = await db.execute(query)
-    return result.scalar_one_or_none()
+def get_user_utils(db: Session, user_id: int):
+    return db.query(User).filter(User.id == user_id).first()
+# async def get_user_utils(db: AsyncSession, user_id: int):
+#     query = select(User).where(User.id == user_id)
+#     result = await db.execute(query)
+#     return result.scalar_one_or_none()
 
 
 def get_user_by_email_utils(db: Session, email: str):
