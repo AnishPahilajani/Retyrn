@@ -1,13 +1,19 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CreateCompany from "./pages/CreateCompany/CreateCompany.js";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
+import CreateCompany from "./pages/CreateCompany/CreateCompany";
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/create-company" element={<CreateCompany />} />
-      </Routes>
-    </Router>
+    <div className="App">
+      <Router>
+        <Routes>
+          {/* <Route exact path="/" element={<Home />} /> */}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/createcompany" element={<CreateCompany />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

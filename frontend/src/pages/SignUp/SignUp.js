@@ -8,11 +8,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { UseForm } from "../../components/UseForm";
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
 const themeLight = createTheme({
   palette: {
     retyrn_blue: createColor("#4ca7da"),
@@ -21,11 +21,31 @@ const themeLight = createTheme({
     },
   },
 });
-
+const initialValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+};
 const theme = createTheme();
 
 export default function SignUp() {
-  document.title = "Create Company";
+  const { values, setValues, handleInputChange } = UseForm(initialValues);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      let resp = await fetch("http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      let data = await resp.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
@@ -39,59 +59,56 @@ export default function SignUp() {
           }}
         >
           <Typography component="h1" variant="h4">
-            Create Company
+            Sign up
           </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
+          <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="company-name"
-                  name="companyName"
+                  onChange={handleInputChange}
+                  autoComplete="given-name"
+                  name="firstName"
                   required
                   fullWidth
-                  id="companyName"
-                  label="Company Name"
+                  id="firstName"
+                  label="First Name"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
-                  id="Owner Name"
-                  label="Owner Name"
-                  name="OwnerName"
-                  autoComplete="owner-name"
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
-                  id="company-email"
+                  id="email"
                   label="Email Address"
-                  name="CompanyEmail"
-                  autoComplete="company-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
-                  id="company-address"
-                  label="Company Address"
-                  name="company address"
-                  autoComplete="company-address"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="company-phone"
-                  label="Company Phone Number"
-                  name="company phone"
-                  autoComplete="company-phone"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  pattern="(?=.*[A-Za-z0-9])(?=.*[@#$%^&+=]).{8,})"
+                  autoComplete="new-password"
                 />
               </Grid>
             </Grid>
@@ -107,8 +124,15 @@ export default function SignUp() {
               }}
               color="retyrn_blue"
             >
-              Create
+              Sign Up
             </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/signin" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>
