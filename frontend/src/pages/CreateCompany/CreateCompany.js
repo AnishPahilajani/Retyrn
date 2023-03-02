@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+
 const themeLight = createTheme({
     
     palette: {
@@ -25,44 +26,37 @@ const themeLight = createTheme({
 const theme = createTheme();
 
 export default function SignUp() {
-  document.title = "Sign up";
+  document.title = "Create Company";
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box sx={{marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
           <Typography component="h1" variant="h4">
-            Sign up
+            Create Company
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" autoFocus/>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name"/>
+                  autoComplete="company-name" name="companyName" required fullWidth id="companyName" label="Company Name" autoFocus/>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
+                <TextField required fullWidth id="Owner Name" label="Owner Name" name="OwnerName" autoComplete="owner-name"/>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth name="phone" label="Phone Number"  id="phone" autoComplete="phone"/>
+                <TextField required fullWidth id="company-email" label="Email Address" name="CompanyEmail" autoComplete="company-email"/>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password"/>
+                <TextField required fullWidth id="company-address" label="Company Address" name="company address" autoComplete="company-address"/>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField required fullWidth id="company-phone" label="Company Phone Number" name="company phone" autoComplete="company-phone"/>
               </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{mt:3, mb:2, color: 'white', ':hover':{ bgcolor: '#6fb8e1'}}} color="retyrn_blue">
-              Sign Up
+              Create
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>

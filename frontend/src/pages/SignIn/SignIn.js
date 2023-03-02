@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -12,6 +11,7 @@ import { Checkbox, CssBaseline, FormControlLabel, TextField } from '@mui/materia
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+
 const themeLight = createTheme({
     
     palette: {
@@ -23,15 +23,16 @@ const themeLight = createTheme({
 });
 
 export default function SignIn() {
+    document.title = "Sign in";
     return(
         <ThemeProvider theme={themeLight}>
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <Box sx={{ marginTop:20, display:'flex', flexDirection:'column', alignItems:'center'}}>
-                    <Typography component="h1"variant="h4">
+                    <Typography component="h1"variant="h4"> {/** Page Name fields */}
                         Sign In
                     </Typography>
-                    <Box component="form">
+                    <Box component="form"> {/** Form fields */}
                         <TextField required fullWidth id="email" label="Email Address" name="email" margin="normal" autoComplete="email" autoFocus/>
                         <TextField required fullWidth id="password" label="Password" name="password" type="password" margin="normal" autoComplete="current-password"/>
                         <FormControlLabel control={<Checkbox value="remember" color="retyrn_blue"/>} label="Remember me"/>
@@ -43,8 +44,8 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="http://localhost:3000/signup#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                <Link href="/signup" variant="body2">
+                                    Don't have an account? Sign Up
                                 </Link>
                             </Grid>
                         </Grid>
