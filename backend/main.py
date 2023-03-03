@@ -16,7 +16,7 @@ user.Base.metadata.create_all(bind = engine)
 
 
 app = FastAPI(
-    title = "Return API"
+    title = "Retyrn API"
 )
  
 origins = [
