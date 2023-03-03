@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Card } from '@mui/material';
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
@@ -17,6 +18,7 @@ const themeLight = createTheme({
     
     palette: {
         retyrn_blue: createColor('#4ca7da'),
+        cancel_color: createColor('#b3b1b1'),
         background: {
             default: "#fafafa"
         }
@@ -29,9 +31,11 @@ export default function SignUp() {
   document.title = "Create Company";
   return (
     <ThemeProvider theme={themeLight}>
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+      <Card sx={{marginTop:15, maxWidth: 700, maxHeight: 700, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center' }}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box sx={{marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+        <Box sx={{marginTop: 10, marginBottom: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
           <Typography component="h1" variant="h4">
             Create Company
           </Typography>
@@ -53,13 +57,23 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField required fullWidth id="company-phone" label="Company Phone Number" name="company phone" autoComplete="company-phone"/>
               </Grid>
+
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{mt:3, mb:2, color: 'white', ':hover':{ bgcolor: '#6fb8e1'}}} color="retyrn_blue">
-              Create
-            </Button>
           </Box>
         </Box>
+        <Box component="span" m={0} display="flex" justifyContent="space-between" alignItems="center"sx={{marginBottom: 12}}>
+          {/**Button links to nothing yet, should go back to previous page */}
+          <Button component={Link} to="/" type="cancel" id="bottom-create" variant="contained" sx={{mt:3, mb:2, color: 'white', ':hover':{ bgcolor: '#c9c7c7'}}} color="cancel_color">
+            Cancel
+          </Button>
+          {/**Button links to nothing yet, should go to new company "wallet/display" */}
+          <Button component={Link} to="/" type="create" id="bottom-create" variant="contained" sx={{mt:3, mb:2, color: 'white', ':hover':{ bgcolor: '#6fb8e1'}}} color="retyrn_blue">
+            Create
+          </Button>
+        </Box>
       </Container>
+      </Card>
+      </Grid>
     </ThemeProvider>
   );
 }

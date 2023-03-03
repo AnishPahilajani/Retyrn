@@ -22,7 +22,6 @@ const themeLight = createTheme({
     }
 });
 
-const theme = createTheme();
 
 export default function SignUp() {
   document.title = "Sign up";
