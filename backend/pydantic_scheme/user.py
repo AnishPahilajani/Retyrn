@@ -12,8 +12,8 @@ class UserCreate(UserBase):
     phone_number: Optional[str] = None
     address: Optional[str] = None
     S3_link: Optional[str] = None
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class User(UserBase):
@@ -23,8 +23,8 @@ class User(UserBase):
     phone_number: Optional[str] = None
     S3_link: Optional[str] = None
     address: Optional[str] = None
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     class Config:
         orm_mode = True
