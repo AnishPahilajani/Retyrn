@@ -12,7 +12,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import { Typography } from '@mui/material';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import { ListItemIcon, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const { palette } = createTheme();
@@ -41,31 +48,77 @@ export default function Dashboard(props) {
 //   The drawer lists some of the pages that the user can access
   const drawer = (
     <div>
-      <Toolbar />
-      <Typography>Retyrn</Typography>
+      <Toolbar>
+        <Typography
+            variant='h6'
+            color='#000000'
+            
+        >
+            Name
+        </Typography>
+            
+        <Typography
+            variant='body2'
+            color='#000000'
+        >
+            Role
+        </Typography>
+      </Toolbar>
       <Divider />
       {/*  Each of the items listed should be a component. For example, accounts should
       display the list of accounts */}
       <List>
-        {['Home', 'Accounts', 'Notifications', 'Claims', 'Documents'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            {/* If the button is clicked, we need to change its state */}
+        <ListItem disablePadding>
             <ListItemButton>
-              <ListItemText primary={text} />
+                <ListItemIcon><HomeOutlinedIcon></HomeOutlinedIcon></ListItemIcon>
+                <ListItemText>Home</ListItemText>
             </ListItemButton>
-          </ListItem>
-        ))}
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><PeopleAltOutlinedIcon></PeopleAltOutlinedIcon></ListItemIcon>
+                <ListItemText>Accounts</ListItemText>
+            </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><NotificationsOutlinedIcon></NotificationsOutlinedIcon></ListItemIcon>
+                <ListItemText>Notifications</ListItemText>
+            </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><InsertDriveFileOutlinedIcon></InsertDriveFileOutlinedIcon></ListItemIcon>
+                <ListItemText>Claims</ListItemText>
+            </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><FolderOutlinedIcon></FolderOutlinedIcon></ListItemIcon>
+                <ListItemText>Documents</ListItemText>
+            </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
-        {['Manage Permissions', 'Settings', 'Help'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            {/* If the button is clicked, we need to change its state */}
+      <ListItem disablePadding>
             <ListItemButton>
-              <ListItemText primary={text} />
+                <ListItemIcon><PeopleAltOutlinedIcon></PeopleAltOutlinedIcon></ListItemIcon>
+                <ListItemText>Manage Permissions</ListItemText>
             </ListItemButton>
-          </ListItem>
-        ))}
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><SettingsOutlinedIcon></SettingsOutlinedIcon></ListItemIcon>
+                <ListItemText>Settings</ListItemText>
+            </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+            <ListItemButton>
+                <ListItemIcon><HelpOutlineOutlinedIcon></HelpOutlineOutlinedIcon></ListItemIcon>
+                <ListItemText>Help</ListItemText>
+            </ListItemButton>
+        </ListItem>
       </List>
     </div>
   );
@@ -77,6 +130,7 @@ export default function Dashboard(props) {
         <Box sx={{ display: 'flex', }}>
         <CssBaseline />
         <AppBar
+            elevation={0}
             position="fixed"
             sx={{
             width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -85,6 +139,7 @@ export default function Dashboard(props) {
             color: '#080D1C'
             }}
         >  
+            
             <Toolbar>
                 {/* This is the menu icon. Once it is clicked, it will 
                 toggle handleDrawerToggle to which will open the drawer */}
@@ -97,7 +152,14 @@ export default function Dashboard(props) {
             >
                 <MenuIcon />
             </IconButton>
+            <Typography
+                variant='h4'
+                color='#4CA7DA'
+            >
+                Retyrn
+            </Typography>
             </Toolbar>
+            <Divider />
         </AppBar>
         <Box
             component="nav"
