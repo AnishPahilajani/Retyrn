@@ -5,14 +5,14 @@ import CreateCompany from "./pages/CreateCompany/CreateCompany";
 function App() {
   return (
     <div className="App">
-    <Router>
-      <Routes>
-        {/* <Route exact path="/" element={<Home />} /> */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/createcompany" element={<CreateCompany />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          {/* <Route exact path="/" element={<Home />} /> */}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/createcompany" element={<CreateCompany />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
