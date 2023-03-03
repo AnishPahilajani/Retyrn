@@ -3,6 +3,7 @@ from typing import Optional, List
 import fastapi
 from fastapi import Depends, HTTPException, FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from pydantic_scheme.user import UserCreate, User
 from typing import Optional, List
@@ -19,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 user_services = UserServices()
 router = fastapi.APIRouter() # initialize db session here
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
  
 @router.get("/users", response_model=List[User])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -28,7 +30,6 @@ def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @router.get("/users/{user_id}", response_model=User)
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    print("NOOO")
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -78,3 +79,11 @@ def update_user(email: str, user: UserCreate ,db: Session = Depends(get_db)):
     user.email = email # Cant edit email with this PUT method
     db_user_updated = user_services.update_user_service(db=db, db_user = db_user, user=user)        
     return db_user_updated
+
+@router.post("/token")
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    return {'access_token' : form_data.username + 'token'}
+
+@router.get('/')
+async def index(token: str = Depends(oauth2_scheme)):
+    return {'the_token' : token}

@@ -12,6 +12,9 @@ sqlalchemy-utils = "*"
 alembic = "*"
 psycopg2 = "*"
 asyncpg = "*"
+python-multipart = "*"
+passlib = "*"
+bcrypt = "*"
 
 [dev-packages]
 

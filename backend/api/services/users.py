@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from datetime import datetime
 from database.models.user import User
 from pydantic_scheme.user import UserCreate
-
+from passlib.hash import bcrypt
 
 
 
@@ -27,7 +27,7 @@ class UserServices:
 
 
     def create_user_service(self, db: Session, user: UserCreate):
-        hashed_password = user.password
+        hashed_password = bcrypt.hash(user.password) # hash here
         db_user = User(email=user.email, 
                     password = hashed_password,
                     first_name = user.first_name,
@@ -42,7 +42,7 @@ class UserServices:
         return db_user
 
     def update_user_service(self, db: Session, db_user, user: UserCreate):
-        hashed_password = user.password
+        hashed_password = bcrypt.hash(user.password) # hash here
         if (db_user.email != user.email) and self.get_user_by_email_service(db=db, email =user.email):
             raise HTTPException(status_code=400, detail="Email is already registered")
         db_user.email = user.email
