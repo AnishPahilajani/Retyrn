@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
+from datetime import datetime
 from database.models.user import User
 from pydantic_scheme.user import UserCreate
 
@@ -33,6 +34,22 @@ def create_user_utils(db: Session, user: UserCreate):
                    address = user.address
                    )
     db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def update_user_utils(db: Session, db_user, user: UserCreate):
+    hashed_password = user.password
+    db_user.email = user.email
+    if (user.email != db_user.email) and get_user_by_email_utils(db=db, email =db_user.email):
+        raise HTTPException(status_code=400, detail="Email is already registered")
+    db_user.first_name = user.first_name
+    db_user.last_name = user.last_name
+    db_user.password = hashed_password
+    db_user.phone_number = user.phone_number
+    db_user.S3_link = user.S3_link
+    db_user.address = user.address
+    db_user.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(db_user)
     return db_user
