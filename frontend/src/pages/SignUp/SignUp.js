@@ -7,24 +7,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const themeLight = createTheme({
-    
-    palette: {
-        retyrn_blue: createColor('#4ca7da'),
-        background: {
-            default: "#fafafa"
-        }
-    }
-});
+import { ThemeProvider } from '@mui/material/styles';
+import ThemeLight from '../../components/Theme/ThemeLight'
+import { createMuiTheme } from '@mui/material';
 
 
 export default function SignUp() {
   document.title = "Sign up";
+  let themeLight = createMuiTheme(ThemeLight);
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">

@@ -7,28 +7,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Card } from '@mui/material';
+import { ThemeProvider } from '@emotion/react';
+import { Card, createMuiTheme } from '@mui/material';
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
-const themeLight = createTheme({
-    
-    palette: {
-        retyrn_blue: createColor('#4ca7da'),
-        cancel_color: createColor('#b3b1b1'),
-        background: {
-            default: "#fafafa"
-        }
-    }
-});
-
-const theme = createTheme();
+import ThemeLight from '../../components/Theme/ThemeLight'
 
 export default function SignUp() {
   document.title = "Create Company";
+  let themeLight = createMuiTheme(ThemeLight);
   return (
     <ThemeProvider theme={themeLight}>
       <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>

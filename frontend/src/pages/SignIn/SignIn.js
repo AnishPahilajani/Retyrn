@@ -7,23 +7,12 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Checkbox, CssBaseline, FormControlLabel, TextField } from '@mui/material';
-
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
-const themeLight = createTheme({
-    
-    palette: {
-        retyrn_blue: createColor('#4ca7da'),
-        background: {
-            default: "#fafafa"
-        }
-    }
-});
+import ThemeLight from '../../components/Theme/ThemeLight'
+import { createMuiTheme } from '@mui/material';
 
 export default function SignIn() {
     document.title = "Sign in";
+    let themeLight = createMuiTheme(ThemeLight);
     return(
         <ThemeProvider theme={themeLight}>
         <Container component="main" maxWidth="xs">
