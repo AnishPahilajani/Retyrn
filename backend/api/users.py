@@ -73,12 +73,12 @@ def get_email(email: str, db: Session = Depends(get_db)):
 #             headers={"WWW-Authenticate": "Bearer"},
 #         )
         
-@router.put("/user/{email}", response_model=User, status_code=201)
+@router.patch("/user/{email}", response_model=User, status_code=201)
 def update_user(email: str, user: UserCreate ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    user.email = email # Cant edit email with this PUT method
+    user.email = email # Cant edit email with this PATCH method
     db_user_updated = user_services.update_user_service(db=db, db_user = db_user, user=user)        
     return db_user_updated
 
