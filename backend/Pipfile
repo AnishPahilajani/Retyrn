@@ -15,6 +15,7 @@ asyncpg = "*"
 python-multipart = "*"
 passlib = "*"
 bcrypt = "*"
+pyjwt = "*"
 
 [dev-packages]
 

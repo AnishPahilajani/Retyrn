@@ -1,13 +1,15 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from datetime import datetime
 from database.models.user import User
 from pydantic_scheme.user import UserCreate
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.hash import bcrypt
-
-
+import jwt
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+JWT_SECRET = '0850fa46da3812d64eaaaa47009db86b2b6105c1d996350cc12b0ce45edfcf08'
 
 class UserServices:       
     def get_user_service(self, db: Session, user_id: int):
@@ -56,3 +58,14 @@ class UserServices:
         db.commit()
         db.refresh(db_user)
         return db_user
+    
+    def get_current_user_service(self, db: Session, token: str = Depends(oauth2_scheme)):
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+            user = self.get_user_by_email_service(db=db, email=payload.get('email'))#User.get(id=payload.get('email'))
+        except:
+            raise HTTPException(
+                status_code=401, 
+                detail='Invalid username or password'
+            )
+        return user

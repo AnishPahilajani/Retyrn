@@ -9,8 +9,10 @@ from pydantic_scheme.user import UserCreate, User
 from typing import Optional, List
 from datetime import datetime
 from sqlalchemy.orm import Session
+from passlib.hash import bcrypt
+import jwt
 
-from api.services.users import UserServices
+from api.services.users import UserServices, JWT_SECRET, oauth2_scheme
 from database.database_engine import get_db, async_get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 # termianl command to run this code
@@ -20,7 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 user_services = UserServices()
 router = fastapi.APIRouter() # initialize db session here
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+
  
 @router.get("/users", response_model=List[User])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -81,9 +83,31 @@ def update_user(email: str, user: UserCreate ,db: Session = Depends(get_db)):
     return db_user_updated
 
 @router.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    return {'access_token' : form_data.username + 'token'}
+async def generate_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    db_user = user_services.get_user_by_email_service(db=db, email=form_data.username)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    if bcrypt.verify(form_data.password, db_user.password):
+        db_user_dict = {
+                        # "first_name": db_user.first_name,
+                        # "last_name": db_user.last_name,
+                        "email": db_user.email,
+                        # "password": db_user.password,
+                        # "phone_number": db_user.phone_number,
+                        # "S3_link": db_user.S3_link,
+                        # "address": db_user.address
+                        }
+        token = jwt.encode(dict(db_user_dict), JWT_SECRET)
+        return {'access_token': token, 'toke_type' : 'bearer'}
+    else:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
-@router.get('/')
-async def index(token: str = Depends(oauth2_scheme)):
-    return {'the_token' : token}
+
+@router.get('/you', response_model=User)
+def get_user_from_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    user = user_services.get_current_user_service(db, token)
+    return user    
