@@ -7,27 +7,18 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {ThemeProvider } from "@mui/material/styles";
+import ThemeLight from '../../components/Theme/ThemeLight'
+import { createMuiTheme, Card } from '@mui/material';
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
-const themeLight = createTheme({
-  palette: {
-    retyrn_blue: createColor("#4ca7da"),
-    background: {
-      default: "#fafafa",
-    },
-  },
-});
-
-const theme = createTheme();
 
 export default function SignUp() {
   document.title = "Create Company";
+  let themeLight = createMuiTheme(ThemeLight);
   return (
     <ThemeProvider theme={themeLight}>
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+      <Card sx={{marginTop:15, maxWidth: 700, maxHeight: 700, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center' }}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -94,28 +85,6 @@ export default function SignUp() {
                   autoComplete="company-phone"
                 />
               </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                color: "white",
-                ":hover": { bgcolor: "#6fb8e1" },
-              }}
-              color="retyrn_blue"
-            >
-              Create
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-  );
-}
-
             </Grid>
           </Box>
         </Box>
