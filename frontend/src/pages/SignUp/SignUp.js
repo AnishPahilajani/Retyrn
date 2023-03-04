@@ -7,10 +7,18 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { UseForm } from "../../components/UseForm";
 import ThemeLight from '../../components/Theme/ThemeLight'
 import { createMuiTheme } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormControl from '@mui/material/FormControl';
 
 const initialValues = {
   firstName: "",
@@ -23,6 +31,13 @@ const initialValues = {
 export default function SignUp() {
   document.title = "Sign up";
   let themeLight = createMuiTheme(ThemeLight);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   const { values, setValues, handleInputChange } = UseForm(initialValues);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,6 +54,7 @@ export default function SignUp() {
       console.log(err);
     }
   };
+
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
@@ -98,10 +114,22 @@ export default function SignUp() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   pattern="(?=.*[A-Za-z0-9])(?=.*[@#$%^&+=]).{8,})"
                   autoComplete="new-password"
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+              </InputAdornment>
+                  }}
                 />
               </Grid>
             </Grid>
