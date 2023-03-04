@@ -15,6 +15,8 @@ class UserCreate(UserBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+class UserAuth(UserBase):
+    password: str
 
 class User(UserBase):
     id: int

@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
-from pydantic_scheme.user import UserCreate, User
+from pydantic_scheme.user import UserCreate, User, UserAuth
 from typing import Optional, List
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
@@ -100,7 +100,25 @@ async def password_check(form_data: OAuth2PasswordRequestForm = Depends(), db: S
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
+        
+@router.post("/token/no-oauth")
+async def password_check(form_data: UserAuth, db: Session = Depends(get_db)):
+    db_user = user_services.get_user_by_email_service(db=db, email=form_data.email)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    if bcrypt.verify(form_data.password, db_user.password):       
+        # access_token = jwt.encode(dict(db_user_dict), JWT_SECRET, algorithm = JWT_ALGORITHM)
+        access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = user_services.create_access_token_service(
+            data={"email": db_user.email,}, expires_delta=access_token_expires
+        )
+        return {'access_token': access_token, 'toke_type' : 'bearer'}
+    else:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 @router.get('/you', response_model=User)
 def get_user_from_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
