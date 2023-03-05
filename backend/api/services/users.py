@@ -46,7 +46,7 @@ class UserServices:
         db.refresh(db_user)
         return db_user
 
-    def update_user_service(self, db: Session, db_user, user: UserCreate):
+    def update_user_service_put(self, db: Session, db_user, user: UserCreate):
         hashed_password = bcrypt.hash(user.password) # hash here
         if (db_user.email != user.email) and self.get_user_by_email_service(db=db, email =user.email):
             raise HTTPException(status_code=400, detail="Email is already registered")
@@ -58,6 +58,31 @@ class UserServices:
         db_user.S3_link = user.S3_link
         db_user.address = user.address
         db_user.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+
+    def update_user_service_patch(self, db: Session, db_user, user: dict):
+        for k, v in user.items():
+            if k == "first_name":
+                db_user.first_name = v
+                db_user.updated_at = datetime.utcnow()
+            elif k == "last_name":
+                db_user.last_name = v
+                db_user.updated_at = datetime.utcnow()
+            elif k == "password":
+                hashed_password = bcrypt.hash(v)
+                db_user.password = hashed_password
+                db_user.updated_at = datetime.utcnow()
+            elif k == "phone_number":
+                db_user.phone_number = v
+                db_user.updated_at = datetime.utcnow()
+            elif k == "S3_link":
+                db_user.S3_link = v
+                db_user.updated_at = datetime.utcnow()
+            elif k == "address":
+                db_user.address = v
+                db_user.updated_at = datetime.utcnow()
         db.commit()
         db.refresh(db_user)
         return db_user
