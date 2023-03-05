@@ -49,7 +49,7 @@ def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    db_user_updated = user_services.update_user_service(db=db, db_user = db_user, user=user)        
+    db_user_updated = user_services.update_user_service_put(db=db, db_user = db_user, user=user)        
     return db_user_updated
 
 @router.get("/user/{email}", response_model=User) # idk why I should change path rom /users to /user if somone can explain it would be nice
@@ -74,12 +74,20 @@ def get_email(email: str, db: Session = Depends(get_db)):
 #         )
         
 @router.patch("/user/{email}", response_model=User, status_code=201)
-def update_user(email: str, user: UserCreate ,db: Session = Depends(get_db)):
+def update_user(email: str, user: dict ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    user.email = email # Cant edit email with this PATCH method
-    db_user_updated = user_services.update_user_service(db=db, db_user = db_user, user=user)        
+    db_user_updated = user_services.update_user_service_patch(db=db, db_user = db_user, user=user)        
+    
+    # for k, v in user.items(): IDK why this does not work and forces me to do a brute force way
+    #         print(k, v)
+    #         if k in db_user.__dict__.keys():
+    #             print(f"k: {k}, typ: {type(k)}: {db_user.__dict__[k]}")
+    #             db_user.__dict__[k] = v
+    #             print(f"k: {k}, typ: {type(k)}: {db_user.__dict__[k]}")    
+    db.commit()
+    db.refresh(db_user_updated)
     return db_user_updated
 
 @router.post("/token")
