@@ -37,7 +37,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@router.post("/users", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
+@router.post("/users", response_model=User, status_code=201)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=user.email)
     if db_user:
