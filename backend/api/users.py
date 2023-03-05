@@ -3,7 +3,7 @@ from typing import Optional, List
 import fastapi
 from fastapi import Depends, HTTPException, FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, SecurityScopes, HTTPBearer
 from pydantic import BaseModel
 from pydantic_scheme.user import UserCreate, User, UserAuth
 from typing import Optional, List
@@ -24,27 +24,27 @@ user_services = UserServices()
 router = fastapi.APIRouter() # initialize db session here
 
  
-@router.get("/users", response_model=List[User])
+@router.get("/users", dependencies=[Depends(HTTPBearer())], response_model=List[User])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = user_services.get_users_service(db=db, skip=skip, limit=limit)
     return users
 
 
-@router.get("/users/{user_id}", response_model=User)
+@router.get("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@router.post("/users", response_model=User, status_code=201)
+@router.post("/users", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email is already registered")
     return user_services.create_user_service(db=db, user=user)
 
-@router.put("/users/{user_id}", response_model=User, status_code=201)
+@router.put("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
@@ -52,7 +52,7 @@ def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user_updated = user_services.update_user_service_put(db=db, db_user = db_user, user=user)        
     return db_user_updated
 
-@router.get("/user/{email}", response_model=User) # idk why I should change path rom /users to /user if somone can explain it would be nice
+@router.get("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User) # idk why I should change path rom /users to /user if somone can explain it would be nice
 def get_email(email: str, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
@@ -73,7 +73,7 @@ def get_email(email: str, db: Session = Depends(get_db)):
 #             headers={"WWW-Authenticate": "Bearer"},
 #         )
         
-@router.patch("/user/{email}", response_model=User, status_code=201)
+@router.patch("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def update_user(email: str, user: dict ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
