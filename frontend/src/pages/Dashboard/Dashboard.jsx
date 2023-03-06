@@ -12,6 +12,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
@@ -32,7 +34,8 @@ const themeLight = createTheme({
         retyrn_blue: createColor('#4ca7da'),
         background: {
             default: "#F2F2F2"
-        }
+        },
+        font: 'Roboto',
     }
 });
 const drawerWidth = 240;
@@ -49,20 +52,24 @@ export default function Dashboard(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography
-            variant='h6'
-            color='#000000'
-            
-        >
-            Name
-        </Typography>
-            
-        <Typography
-            variant='body2'
-            color='#000000'
-        >
-            Role
-        </Typography>
+        <Stack direction="row" spacing={3}>
+        <Avatar>N</Avatar>
+            <div>
+                <Typography
+                    variant='subtitle1'
+                    color='#000000'
+                >
+                    Name
+                </Typography>
+                    
+                <Typography
+                    variant='body2'
+                    color='#7C7C7C'
+                >
+                    Role
+                </Typography>
+            </div>
+        </Stack>
       </Toolbar>
       <Divider />
       {/*  Each of the items listed should be a component. For example, accounts should
