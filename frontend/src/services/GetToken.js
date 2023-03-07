@@ -8,7 +8,8 @@ export async function GetToken(url, values, setErrMsg, setAuth, navigate) {
       body: JSON.stringify(values),
     });
     let data = await resp.json();
-    if (resp.status === 200) {
+
+    if (resp.status === 200 || resp.status === 201) {
       const accessToken = data?.access_token;
       const roles = data?.roles;
       setAuth({ roles, accessToken });

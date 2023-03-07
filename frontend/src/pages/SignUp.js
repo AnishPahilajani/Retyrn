@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { GetToken } from "../services/GetToken";
-
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -41,7 +41,7 @@ export default function SignUp() {
   const [errMsg, setErrMsg] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-    GetToken(SIGNUP_URL, values, setErrMsg);
+    GetToken(SIGNUP_URL, values, setErrMsg, setAuth, navigate);
   };
   useEffect(() => {}, [errMsg]);
   useEffect(() => {
@@ -59,6 +59,7 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
+          {errMsg === "" ? <></> : <Alert severity="error">{errMsg}</Alert>}
           <Typography component="h1" variant="h4">
             Sign up
           </Typography>
