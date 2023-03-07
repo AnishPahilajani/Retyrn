@@ -12,7 +12,9 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
@@ -20,6 +22,7 @@ import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { ListItemIcon, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -51,24 +54,14 @@ export default function SideDrawer(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Stack direction="row" spacing={3}>
-        <Avatar>N</Avatar>
-            <div>
-                <Typography
-                    variant='subtitle1'
-                    color='#000000'
-                >
-                    Name
-                </Typography>
-                    
-                <Typography
-                    variant='body2'
-                    color='#7C7C7C'
-                >
-                    Role
-                </Typography>
-            </div>
-        </Stack>
+        <Card elevation={0} sx={{width:300}}>
+            <CardHeader
+                avatar={<Avatar>N</Avatar>}
+                action={<IconButton><ArrowDropDownIcon></ArrowDropDownIcon></IconButton>}
+                title="Name"
+                subheader="Role"
+            />
+        </Card>
       </Toolbar>
       <Divider />
       {/*  Each of the items listed should be a component. For example, accounts should
@@ -82,7 +75,7 @@ export default function SideDrawer(props) {
         </ListItem>
         <ListItem disablePadding>
             <ListItemButton>
-                <ListItemIcon><PeopleAltOutlinedIcon></PeopleAltOutlinedIcon></ListItemIcon>
+                <ListItemIcon><PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon></ListItemIcon>
                 <ListItemText>Accounts</ListItemText>
             </ListItemButton>
         </ListItem>
@@ -142,11 +135,11 @@ export default function SideDrawer(props) {
             width: { sm: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
             backgroundColor:'#FFFFFF',
-            color: '#080D1C'
+            color: '#080D1C',
             }}
         >  
             
-            <Toolbar>
+            <Toolbar sx={{height:72}}>
                 {/* This is the menu icon. Once it is clicked, it will 
                 toggle handleDrawerToggle to which will open the drawer */}
             <IconButton
@@ -167,6 +160,7 @@ export default function SideDrawer(props) {
             </Toolbar>
             <Divider />
         </AppBar>
+        
         <Box
             component="nav"
             sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
