@@ -1,18 +1,22 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import { GetToken } from "../services/GetToken";
+
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { UseForm } from "../../components/UseForm";
-
+import { UseForm } from "../hooks/useForm";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+
 const themeLight = createTheme({
   palette: {
     retyrn_blue: createColor("#4ca7da"),
@@ -22,30 +26,27 @@ const themeLight = createTheme({
   },
 });
 const initialValues = {
-  firstName: "",
-  lastName: "",
+  first_name: "",
+  last_name: "",
   email: "",
   password: "",
 };
+const SIGNUP_URL = "signup";
 const theme = createTheme();
 
 export default function SignUp() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const { values, setValues, handleInputChange } = UseForm(initialValues);
-  const handleSubmit = async (event) => {
+  const [errMsg, setErrMsg] = useState("");
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      let resp = await fetch("http://localhost:8000/users", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      let data = await resp.json();
-    } catch (err) {
-      console.log(err);
-    }
+    GetToken(SIGNUP_URL, values, setErrMsg);
   };
+  useEffect(() => {}, [errMsg]);
+  useEffect(() => {
+    setErrMsg("");
+  }, [values]);
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
@@ -67,10 +68,10 @@ export default function SignUp() {
                 <TextField
                   onChange={handleInputChange}
                   autoComplete="given-name"
-                  name="firstName"
+                  name="first_name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="first_name"
                   label="First Name"
                   autoFocus
                 />
@@ -80,9 +81,9 @@ export default function SignUp() {
                   onChange={handleInputChange}
                   required
                   fullWidth
-                  id="lastName"
+                  id="last_name"
                   label="Last Name"
-                  name="lastName"
+                  name="last_name"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -94,7 +95,6 @@ export default function SignUp() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  type="email"
                   autoComplete="email"
                 />
               </Grid>
@@ -107,7 +107,6 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
-                  pattern="(?=.*[A-Za-z0-9])(?=.*[@#$%^&+=]).{8,})"
                   autoComplete="new-password"
                 />
               </Grid>
@@ -128,7 +127,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signin" variant="body2">
+                <Link to="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
