@@ -13,12 +13,11 @@ import ThemeLight from '../../components/Theme/ThemeLight'
 import { createMuiTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import FormControl from '@mui/material/FormControl';
+import {useState} from 'react'
+
 
 const initialValues = {
   firstName: "",
@@ -30,8 +29,9 @@ const initialValues = {
 
 export default function SignUp() {
   document.title = "Sign up";
-  let themeLight = createMuiTheme(ThemeLight);
+  let themeLight = createMuiTheme(ThemeLight); {/**Theme */}
 
+  {/**Password visibility toggle */}
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
