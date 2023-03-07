@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect } from "react";
+import { UseForm } from "../hooks/useForm";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -23,9 +25,19 @@ const themeLight = createTheme({
 });
 
 const theme = createTheme();
-
+const initialValues = {
+  company_name: "",
+  owner_name: "",
+  company_email: "",
+  company_address: "",
+  company_phone: "",
+};
 export default function SignUp() {
   document.title = "Create Company";
+  const { values, setValues, handleInputChange } = UseForm(initialValues);
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
@@ -45,8 +57,9 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   autoComplete="company-name"
-                  name="companyName"
+                  name="company_name"
                   required
                   fullWidth
                   id="companyName"
@@ -56,41 +69,45 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
                   id="Owner Name"
                   label="Owner Name"
-                  name="OwnerName"
+                  name="owner_name"
                   autoComplete="owner-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
                   id="company-email"
                   label="Email Address"
-                  name="CompanyEmail"
+                  name="company_email"
                   autoComplete="company-email"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
                   id="company-address"
                   label="Company Address"
-                  name="company address"
+                  name="company_address"
                   autoComplete="company-address"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleInputChange}
                   required
                   fullWidth
                   id="company-phone"
                   label="Company Phone Number"
-                  name="company phone"
+                  name="company_phone"
                   autoComplete="company-phone"
                 />
               </Grid>
