@@ -1,4 +1,5 @@
 import React from 'react';
+import './SideDrawer.css'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -154,8 +155,9 @@ export default function SideDrawer(props) {
             <Typography
                 variant='h4'
                 color='#4CA7DA'
+                fontFamily='Shanti'
             >
-                Retyrn
+                RETYRN
             </Typography>
             </Toolbar>
             <Divider />
