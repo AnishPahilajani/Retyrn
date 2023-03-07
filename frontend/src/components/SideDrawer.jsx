@@ -13,7 +13,10 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
@@ -52,24 +55,14 @@ export default function SideDrawer(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Stack direction="row" spacing={3}>
-        <Avatar>N</Avatar>
-            <div>
-                <Typography
-                    variant='subtitle1'
-                    color='#000000'
-                >
-                    Name
-                </Typography>
-                    
-                <Typography
-                    variant='body2'
-                    color='#7C7C7C'
-                >
-                    Role
-                </Typography>
-            </div>
-        </Stack>
+      <Card elevation={0} sx={{width:300}}>
+            <CardHeader
+                avatar={<Avatar>N</Avatar>}
+                action={<IconButton><ArrowDropDownIcon></ArrowDropDownIcon></IconButton>}
+                title="Name"
+                subheader="Role"
+            />
+        </Card>
       </Toolbar>
       <Divider />
       {/*  Each of the items listed should be a component. For example, accounts should
@@ -83,7 +76,7 @@ export default function SideDrawer(props) {
         </ListItem>
         <ListItem disablePadding>
             <ListItemButton>
-                <ListItemIcon><PeopleAltOutlinedIcon></PeopleAltOutlinedIcon></ListItemIcon>
+                <ListItemIcon><PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon></ListItemIcon>
                 <ListItemText>Accounts</ListItemText>
             </ListItemButton>
         </ListItem>
@@ -147,7 +140,7 @@ export default function SideDrawer(props) {
             }}
         >  
             
-            <Toolbar>
+            <Toolbar sx={{height:72}}>
                 {/* This is the menu icon. Once it is clicked, it will 
                 toggle handleDrawerToggle to which will open the drawer */}
             <IconButton
