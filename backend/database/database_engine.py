@@ -7,7 +7,7 @@ from sqlalchemy_utils import database_exists, create_database
 # GRANT ALL ON SCHEMA public TO anish;
 # grant usage on schema public to anis;
 # grant all priviliges on database retyrn_db to anish
-DATABASE_URL = "sqlite:///./sql_app.db"#'postgresql://postgres:postgres@localhost:5432/retyrn_db'
+DATABASE_URL = "postgresql+psycopg2://anish:anish@localhost:5432/retyrn_db"#'postgresql://postgres:postgres@localhost:5432/retyrn_db'
 ASYNC_DATABASE_URL = 'postgresql+asyncpg://anish:anish@localhost:5432/retyrn_db'
 
 
