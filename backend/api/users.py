@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from passlib.hash import bcrypt
 import jwt
+import re
 
 from api.services.users import UserServices, JWT_SECRET, oauth2_scheme, JWT_ALGORITHM, JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 from database.database_engine import get_db, async_get_db
@@ -23,7 +24,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 user_services = UserServices()
 router = fastapi.APIRouter() # initialize db session here
 
- 
+#CONSTANTS
+EMAIL_REGEX = r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+PASSWORD_REGEX = r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_#?!@$%^&*-]).{8,64}$"
+NAME_REGEX = r'^[A-Za-z]{1,50}$'
 @router.get("/users", dependencies=[Depends(HTTPBearer())], response_model=List[User])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = user_services.get_users_service(db=db, skip=skip, limit=limit)
@@ -37,12 +41,24 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@router.post("/users", response_model=User, status_code=201)
+@router.post("/signup", status_code=201)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email is already registered")
-    return user_services.create_user_service(db=db, user=user)
+    elif not re.match(EMAIL_REGEX, user.email):
+        raise HTTPException(status_code=401, detail="Invalid Email Format")
+    elif not re.match(PASSWORD_REGEX, user.password):
+        raise HTTPException(status_code=401, detail="Invalid Password Format")
+    elif not re.match(NAME_REGEX, user.first_name):
+        raise HTTPException(status_code=401, detail="Invalid First Name")
+    elif not re.match(NAME_REGEX, user.last_name):
+        raise HTTPException(status_code=401, detail="Invalid Last Name")
+    db_user = user_services.create_user_service(db=db, user=user)
+    access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+    #check
+    access_token = user_services.create_access_token_service(data={"email": db_user.email,}, expires_delta=access_token_expires)
+    return {'access_token': access_token, 'toke_type' : 'bearer'}
 
 @router.put("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
@@ -113,7 +129,7 @@ async def password_check(form_data: OAuth2PasswordRequestForm = Depends(), db: S
 async def password_check(form_data: UserAuth, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=form_data.email)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Invalid Username or Password")
     if bcrypt.verify(form_data.password, db_user.password):       
         # access_token = jwt.encode(dict(db_user_dict), JWT_SECRET, algorithm = JWT_ALGORITHM)
         access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
