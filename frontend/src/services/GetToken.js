@@ -12,6 +12,8 @@ export async function GetToken(url, values, setErrMsg, setAuth, navigate) {
     if (resp.status === 200 || resp.status === 201) {
       const accessToken = data?.access_token;
       const roles = data?.roles;
+
+      localStorage.setItem("token", data.access_token);
       setAuth({ roles, accessToken });
       navigate("../dashboard");
     } else {

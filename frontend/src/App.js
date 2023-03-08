@@ -4,7 +4,7 @@ import SignUp from "./components/SignUp";
 import Layout from "./components/Layout";
 import CreateCompany from "./components/CreateCompany";
 import RequireAuth from "./components/RequireAuth";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Page404 from "./components/ErrorPages/Page404";
 import ComingSoon from "./components/ErrorPages/ComingSoon";
 const ROLES = {
