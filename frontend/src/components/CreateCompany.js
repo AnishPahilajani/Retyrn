@@ -34,7 +34,6 @@ export default function SignUp() {
   }, [values]);
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("hello");
     NewCompany(values, navigate);
   };
   return (
@@ -156,7 +155,6 @@ export default function SignUp() {
                   </Button>
                   {/**Button links to nothing yet, should go to new company "wallet/display" */}
                   <Button
-                    onClick={() => console.log("test")}
                     type="submit"
                     id="bottom-create"
                     variant="contained"
