@@ -8,7 +8,10 @@ const RequireAuth = ({ allowedRoles }) => {
   return auth?.accessToken ? (
     <Outlet />
   ) : (
-    <Navigate to="/signin" state={{ from: location }} replace />
+    <div>
+      {console.log(auth.accessToken)}
+      <Navigate to="/signin" state={{ from: location }} replace />
+    </div>
   );
 };
 

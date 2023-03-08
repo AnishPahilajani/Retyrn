@@ -24,5 +24,6 @@ export async function GetToken(url, values, setErrMsg, setAuth, navigate) {
     } else {
       setErrMsg("Login Failed");
     }
+    navigate("../page404");
   }
 }

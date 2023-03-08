@@ -2,9 +2,11 @@ import React from "react";
 
 import useAuth from "../hooks/useAuth";
 import useLogout from "../hooks/useLogout";
-import { Link, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Dashboard = () => {
-  const navigate = useNavigate();
+  const { auth } = useAuth();
+  // console.log(auth.accessToken);
   // const logout = useLogout();
   // const signOut = async () => {
   //   await logout();
@@ -12,11 +14,13 @@ const Dashboard = () => {
   // };
   return (
     <div>
-      <Link to="../createcompany">Create Company</Link>
-      Dashboard
-      {/* <form onSubmit={signOut}>
+      <div>
+        <Link to="../createcompany">Create Company</Link>
+        Dashboard
+        {/* <form onSubmit={signOut}>
         <button>Logout</button>
       </form> */}
+      </div>
     </div>
   );
 };

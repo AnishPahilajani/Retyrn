@@ -12,6 +12,13 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ThemeLight from "./Theme/ThemeLight";
+import { createMuiTheme } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   Checkbox,
   CssBaseline,
@@ -19,23 +26,19 @@ import {
   TextField,
 } from "@mui/material";
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const themeLight = createTheme({
-  palette: {
-    retyrn_blue: createColor("#4ca7da"),
-    background: {
-      default: "#fafafa",
-    },
-  },
-});
 const initialValues = {
   email: "",
   password: "",
 };
 const SIGNIN_URL = "token/no-oauth";
 export default function SignIn() {
+  document.title = "Sign in";
+  let themeLight = createMuiTheme(ThemeLight);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const { values, setValues, handleInputChange } = UseForm(initialValues);
@@ -80,12 +83,25 @@ export default function SignIn() {
               onChange={handleInputChange}
               required
               fullWidth
-              id="password"
-              label="Password"
               name="password"
-              type="password"
-              margin="normal"
-              autoComplete="current-password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              autoComplete="new-password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <FormControlLabel
               control={
