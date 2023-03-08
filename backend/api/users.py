@@ -42,7 +42,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 """
 Email: email format
-Password: 1 Upper, 1 Lower, 1 Number, 1 Special Character (_#?!@$%^&*-)
+Password: at least 1 Upper, 1 Lower, 1 Number, 1 Special Character (_#?!@$%^&*-), min 8 chars, max 64 chars
 Name: Letters and 1-50 characters
 Examples: 
     Email: hello@gmail.com
