@@ -41,6 +41,7 @@ class User(Timestamp, Base):
     
     # uselist = False => one to one relation
     truck_driver = relationship("TruckDriver", back_populates = "owner", uselist = False) # "owner" needs to be same name as TruckDriver table
+    # company_owner = relationship("Company", back_populates = "owner_id", uselist = False)
     
     
     
