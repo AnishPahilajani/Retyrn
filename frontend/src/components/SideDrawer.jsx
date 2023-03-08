@@ -81,26 +81,30 @@ export default function SideDrawer(props) {
           />
         </Card>
       </Toolbar>
-      <Divider />
+      <Divider/>
       {/*  Each of the items listed should be a component. For example, accounts should
       display the list of accounts */}
       <List>
         {/* Traverses through drawerTabs and makes each object a list item button in the drawer */}
         {drawerTabs.map((item, index) => (
-          <ListItemButton key={index}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.name} />
-          </ListItemButton>
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
         ))}
       </List>
-      <Divider />
+      <Divider/>
       <List>
         {/* Traverses through drawerOtherTabs and makes each object a list item button in the drawer */}
         {drawerOtherTabs.map((item, index) => (
-          <ListItemButton key={index}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.name} />
-          </ListItemButton>
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
         ))}
       </List>
     </div>
@@ -112,7 +116,7 @@ export default function SideDrawer(props) {
   return (
     <ThemeProvider theme={themeLight}>
       <Box sx={{ display: "flex" }}>
-        <CssBaseline />
+        <CssBaseline/>
         <AppBar
           elevation={0}
           position="fixed"
@@ -123,6 +127,7 @@ export default function SideDrawer(props) {
             color: "#080D1C",
           }}
         >
+            {/* Appbar information such as menu icon and title */}
           <Toolbar sx={{ height: 72 }}>
             {/* This is the menu icon. Once it is clicked, it will 
                 toggle handleDrawerToggle to which will open the drawer */}
@@ -139,7 +144,7 @@ export default function SideDrawer(props) {
               RETYRN
             </Typography>
           </Toolbar>
-          <Divider />
+          <Divider/>
         </AppBar>
         <Box
           component="nav"
@@ -180,9 +185,7 @@ export default function SideDrawer(props) {
             {drawer}
           </Drawer>
         </Box>
-
-        {/* Main component to which displays whatever we want. */}
-        <Toolbar></Toolbar>
+        <Toolbar/>
       </Box>
     </ThemeProvider>
   );
