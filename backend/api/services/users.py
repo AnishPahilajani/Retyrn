@@ -9,6 +9,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from passlib.hash import bcrypt
 import jwt
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 JWT_SECRET = '0850fa46da3812d64eaaaa47009db86b2b6105c1d996350cc12b0ce45edfcf08'
 JWT_ALGORITHM = "HS256"
@@ -107,3 +108,5 @@ class UserServices:
                 detail='Invalid username or password'
             )
         return user
+    
+user_services = UserServices()

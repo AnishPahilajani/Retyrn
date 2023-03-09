@@ -8,7 +8,7 @@ from typing import Optional, List
 
 # do all installations with pipenv install <package name>
 
-from api import users
+from api import users, companies
 from database.database_engine import engine
 from database.models import user
 
@@ -35,3 +35,4 @@ app.add_middleware(
 
 
 app.include_router(users.router)
+app.include_router(companies.router)

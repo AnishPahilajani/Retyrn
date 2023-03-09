@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional, List
 
 
-class Company():
+class Company(BaseModel):
     id: int
     name: str
     address: str
