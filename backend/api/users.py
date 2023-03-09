@@ -33,14 +33,20 @@ def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = user_services.get_users_service(db=db, skip=skip, limit=limit)
     return users
 
-
+'''
+get user based on given user_id
+'''
 @router.get("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+
 """
+Allow users to sign up using email and password
+
 Email: email format
 Password: at least 1 Upper, 1 Lower, 1 Number, 1 Special Character (_#?!@$%^&*-), min 8 chars, max 64 chars
 Name: Letters and 1-50 characters
@@ -65,10 +71,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid Last Name")
     db_user = user_services.create_user_service(db=db, user=user)
     access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
-    #check
-    access_token = user_services.create_access_token_service(data={"email": db_user.email,}, expires_delta=access_token_expires)
+    access_token = user_services.create_access_token_service(data={"email": db_user.email,"user_id":db_user.id}, expires_delta=access_token_expires)
     return {'access_token': access_token, 'toke_type' : 'bearer'}
 
+'''
+update user data based on user_id, email can be changed
+'''
 @router.put("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
@@ -77,6 +85,9 @@ def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user_updated = user_services.update_user_service_put(db=db, db_user = db_user, user=user)        
     return db_user_updated
 
+'''
+get user based on given email
+'''
 @router.get("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User) # idk why I should change path rom /users to /user if somone can explain it would be nice
 def get_email(email: str, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
@@ -97,7 +108,10 @@ def get_email(email: str, db: Session = Depends(get_db)):
 #             detail="Incorrect username or password",
 #             headers={"WWW-Authenticate": "Bearer"},
 #         )
-        
+
+'''
+update user data based on user_id, email can NOT be changed
+'''   
 @router.patch("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201)
 def update_user(email: str, user: dict ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
@@ -124,7 +138,7 @@ async def password_check(form_data: OAuth2PasswordRequestForm = Depends(), db: S
         # access_token = jwt.encode(dict(db_user_dict), JWT_SECRET, algorithm = JWT_ALGORITHM)
         access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = user_services.create_access_token_service(
-            data={"email": db_user.email,}, expires_delta=access_token_expires
+            data={"email": db_user.email, "user_id":db_user.id}, expires_delta=access_token_expires
         )
         return {'access_token': access_token, 'toke_type' : 'bearer'}
     else:
@@ -143,7 +157,7 @@ async def password_check(form_data: UserAuth, db: Session = Depends(get_db)):
         # access_token = jwt.encode(dict(db_user_dict), JWT_SECRET, algorithm = JWT_ALGORITHM)
         access_token_expires = timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = user_services.create_access_token_service(
-            data={"email": db_user.email,}, expires_delta=access_token_expires
+            data={"email": db_user.email,"user_id":db_user.id}, expires_delta=access_token_expires
         )
         return {'access_token': access_token, 'toke_type' : 'bearer'}
     else:
