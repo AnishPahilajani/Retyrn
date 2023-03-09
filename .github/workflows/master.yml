@@ -20,5 +20,3 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           cd backend
-          if [ -f req.txt ]; then pip install -r req.txt;
-    
