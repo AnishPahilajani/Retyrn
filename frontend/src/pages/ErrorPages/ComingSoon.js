@@ -7,7 +7,7 @@ import {ThemeProvider } from "@mui/material/styles";
 //can add a photo of somesort like most 404 pages
 
 export default function ComingSoon() {
-    document.title = "404 Page Not Found";
+    document.title = "Coming Soon";
     let themeLight = createMuiTheme(ThemeLight);
     return(
         <ThemeProvider theme={themeLight}>
@@ -24,9 +24,9 @@ export default function ComingSoon() {
             </Typography>
             {/**Currently links to nothing, but it should go back to home */}
             {/**Linked using href instead of Router atm */}
-            <Button href="/" type="create" id="bottom-create" variant="contained" sx={{mt:5, mb:2, color: 'white', ':hover':{ bgcolor: '#6fb8e1'}}} color="retyrn_blue">
-            Return
-          </Button>
+            <Button href="/" type="return" id="bottom-return" variant="contained" sx={{mt:5, mb:2, color: 'white', ':hover':{ bgcolor: '#6fb8e1'}}} color="retyrn_blue">
+                Return
+            </Button>
         </Box>
         </ThemeProvider>
     );

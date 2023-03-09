@@ -18,7 +18,7 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={themeLight}>
       <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-      <Card sx={{marginTop:15, maxWidth: 700, maxHeight: 700, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center' }}>
+      <Card sx={{marginTop:10, width: 850, maxWidth: 900, maxHeight: 700, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center' }}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -32,7 +32,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h4">
             Create Company
           </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
+          <Box component="form" sx={{ mt: 3, width: 800 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
