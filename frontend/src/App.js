@@ -4,7 +4,9 @@ import SignUp from "./components/SignUp";
 import Layout from "./components/Layout";
 import CreateCompany from "./components/CreateCompany";
 import RequireAuth from "./components/RequireAuth";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Page404 from "./components/ErrorPages/Page404";
+import ComingSoon from "./components/ErrorPages/ComingSoon";
 const ROLES = {
   User: 1,
   Trucker: 2,
@@ -18,6 +20,8 @@ function App() {
         {/* public routes */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/page404" element={<Page404 />} />
+        <Route path="/comingsoon" element={<ComingSoon />} />
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />

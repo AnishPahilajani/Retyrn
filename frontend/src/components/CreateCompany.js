@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { UseForm } from "../hooks/useForm";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -9,22 +9,11 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
-const themeLight = createTheme({
-  palette: {
-    retyrn_blue: createColor("#4ca7da"),
-    background: {
-      default: "#fafafa",
-    },
-  },
-});
-
-const theme = createTheme();
+import { ThemeProvider } from "@mui/material/styles";
+import ThemeLight from "./Theme/ThemeLight";
+import { createMuiTheme, Card } from "@mui/material";
+import { UseForm } from "../hooks/useForm";
+import { NewCompany } from "../services/NewCompany";
 const initialValues = {
   company_name: "",
   owner_name: "",
@@ -34,101 +23,157 @@ const initialValues = {
 };
 export default function SignUp() {
   document.title = "Create Company";
+  let themeLight = createMuiTheme(ThemeLight);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { values, setValues, handleInputChange } = UseForm(initialValues);
+  const [errMsg, setErrMsg] = useState("");
+  useEffect(() => {}, [errMsg]);
   useEffect(() => {
-    console.log(values);
+    setErrMsg("");
   }, [values]);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    NewCompany(values, navigate);
+  };
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Card
           sx={{
-            marginTop: 20,
+            marginTop: 15,
+            maxWidth: 700,
+            maxHeight: 700,
+            borderRadius: 3,
+            boxShadow: 2,
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h4">
-            Create Company
-          </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleInputChange}
-                  autoComplete="company-name"
-                  name="company_name"
-                  required
-                  fullWidth
-                  id="companyName"
-                  label="Company Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleInputChange}
-                  required
-                  fullWidth
-                  id="Owner Name"
-                  label="Owner Name"
-                  name="owner_name"
-                  autoComplete="owner-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleInputChange}
-                  required
-                  fullWidth
-                  id="company-email"
-                  label="Email Address"
-                  name="company_email"
-                  autoComplete="company-email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleInputChange}
-                  required
-                  fullWidth
-                  id="company-address"
-                  label="Company Address"
-                  name="company_address"
-                  autoComplete="company-address"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleInputChange}
-                  required
-                  fullWidth
-                  id="company-phone"
-                  label="Company Phone Number"
-                  name="company_phone"
-                  autoComplete="company-phone"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
               sx={{
-                mt: 3,
-                mb: 2,
-                color: "white",
-                ":hover": { bgcolor: "#6fb8e1" },
+                marginTop: 20,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
-              color="retyrn_blue"
             >
-              Create
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+              <Typography component="h1" variant="h4">
+                Create Company
+              </Typography>
+              <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      onChange={handleInputChange}
+                      autoComplete="company-name"
+                      name="companyName"
+                      required
+                      fullWidth
+                      id="companyName"
+                      label="Company Name"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      onChange={handleInputChange}
+                      required
+                      fullWidth
+                      id="Owner Name"
+                      label="Owner Name"
+                      name="OwnerName"
+                      autoComplete="owner-name"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      onChange={handleInputChange}
+                      required
+                      fullWidth
+                      id="company-email"
+                      label="Email Address"
+                      name="CompanyEmail"
+                      autoComplete="company-email"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      onChange={handleInputChange}
+                      required
+                      fullWidth
+                      id="company-address"
+                      label="Company Address"
+                      name="company address"
+                      autoComplete="company-address"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      onChange={handleInputChange}
+                      required
+                      fullWidth
+                      id="company-phone"
+                      label="Company Phone Number"
+                      name="company phone"
+                      autoComplete="company-phone"
+                    />
+                  </Grid>
+                </Grid>
+                <Box
+                  component="span"
+                  m={0}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ marginBottom: 12 }}
+                >
+                  {/**Button links to nothing yet, should go back to previous page */}
+                  <Button
+                    onClick={() => navigate(-1)}
+                    type="button"
+                    id="bottom-create"
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      color: "white",
+                      ":hover": { bgcolor: "#c9c7c7" },
+                    }}
+                    color="cancel_color"
+                  >
+                    Cancel
+                  </Button>
+                  {/**Button links to nothing yet, should go to new company "wallet/display" */}
+                  <Button
+                    type="submit"
+                    id="bottom-create"
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      color: "white",
+                      ":hover": { bgcolor: "#6fb8e1" },
+                    }}
+                    color="retyrn_blue"
+                  >
+                    Create
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Container>
+        </Card>
+      </Grid>
     </ThemeProvider>
   );
 }
