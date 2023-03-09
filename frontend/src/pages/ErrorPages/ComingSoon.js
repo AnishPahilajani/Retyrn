@@ -1,10 +1,3 @@
-import React from 'react';
-import { Box, Button,Typography } from '@mui/material';
-import ThemeLight from '../../components/Theme/ThemeLight'
-import { createMuiTheme} from '@mui/material';
-import CssBaseline from "@mui/material/CssBaseline";
-import {ThemeProvider } from "@mui/material/styles";
-//can add a photo of somesort like most 404 pages
 
 export default function ComingSoon() {
     document.title = "Coming Soon";
