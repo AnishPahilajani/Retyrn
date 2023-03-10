@@ -19,3 +19,9 @@ class Company(Timestamp, Base):
     
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
     owner = relationship("User", back_populates="company_owner")
+    
+    
+class UserCompanyRelation(Timestamp, Base):
+    __tablename__ = "user_company"
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, primary_key = True)
+    company_id = Column(Integer, ForeignKey("company.id"), nullable=False, primary_key=True)

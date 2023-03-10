@@ -4,7 +4,7 @@ from passlib.hash import bcrypt
 from fastapi import HTTPException, Depends
 from .users import JWT_ACCESS_TOKEN_EXPIRE_MINUTES, JWT_ALGORITHM, JWT_SECRET, jwt, oauth2_scheme
 
-from database.models.company import Company
+from database.models.company import Company, UserCompanyRelation
 from .users import UserServices
 
 
@@ -19,6 +19,14 @@ class CompanyServices:
         db.add(db_company)
         db.commit()
         db.refresh(db_company)
+        db_user_company = UserCompanyRelation(
+                        user_id = user_id_FK,
+                        company_id = db_company.id
+                        )
+        
+        db.add(db_user_company)
+        db.commit()
+        db.refresh(db_user_company)
         return db_company
     
     def get_companies_service(self, db: Session, skip: int = 0, limit: int = 100):
@@ -32,6 +40,7 @@ class CompanyServices:
     
     def get_company_by_owner_service(self, db: Session, user_id: int):
         return db.query(Company).filter(Company.user_id == user_id).first()
+    
     
     def update_company_service_patch(self, db: Session, db_company, company: dict):
         for k, v in company.items():
