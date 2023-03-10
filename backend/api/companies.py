@@ -45,6 +45,8 @@ def create_company(company: CreateCompany,token = Depends(auth.has_access) ,db: 
   db_company = company_services.get_company_by_name_service(db=db, name=company.name)
   if db_company:
     raise HTTPException(status_code=400, detail="Company is already registered")
+  if company_services.get_company_by_owner_service(db=db, user_id=token['user_id']):
+    raise HTTPException(status_code=400, detail="You cant have more than one owner for 1 company")
   db_company = company_services.create_company_service(db=db, company=company, email=token['email'], user_id_FK=token['user_id'] )
   return db_company
   

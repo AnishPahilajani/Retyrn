@@ -17,5 +17,5 @@ class Company(Timestamp, Base):
     address = Column(Text(), nullable=True)
     phone_number = Column(String(), index=True, nullable=True)
     
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
     owner = relationship("User", back_populates="company_owner")

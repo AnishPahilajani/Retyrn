@@ -30,6 +30,9 @@ class CompanyServices:
     def get_company_by_name_service(self, db: Session, name: str):
         return db.query(Company).filter(Company.name == name).first()
     
+    def get_company_by_owner_service(self, db: Session, user_id: int):
+        return db.query(Company).filter(Company.user_id == user_id).first()
+    
     def update_company_service_patch(self, db: Session, db_company, company: dict):
         for k, v in company.items():
             if k == "address":
