@@ -41,6 +41,16 @@ class CompanyServices:
     def get_company_by_owner_service(self, db: Session, user_id: int):
         return db.query(Company).filter(Company.user_id == user_id).first()
     
+    def get_company_by_id_service(self, db: Session, id: int):
+        return db.query(Company).filter(Company.id == id).first()
+    
+    def get_employees_of_company(self, db: Session, name: str):
+        db_company = db.query(Company).filter(Company.name == name).first()
+        if db_company is None:
+            raise HTTPException(status_code=404, detail="Company does not exist")
+        user_ids = db.query(UserCompanyRelation).filter(UserCompanyRelation.company_id == db_company.id).all()
+        return user_ids
+            
     
     def update_company_service_patch(self, db: Session, db_company, company: dict):
         for k, v in company.items():

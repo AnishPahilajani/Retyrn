@@ -16,19 +16,23 @@ import re
 from api.services.users import UserServices, JWT_SECRET, oauth2_scheme, JWT_ALGORITHM, JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 from database.database_engine import get_db, async_get_db
 from sqlalchemy.ext.asyncio import AsyncSession
+from  api.services.authentication import auth
+from api.services.companies import CompanyServices, UserCompanyRelation
+from pydantic_scheme.companies import Company
 # termianl command to run this code
 # uvicorn users:app --reload 
 
 # do all installations with pipenv install <package name>
 
 user_services = UserServices()
+user_company_services = CompanyServices()
 router = fastapi.APIRouter() # initialize db session here
 
 #CONSTANTS
 EMAIL_REGEX = r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
 PASSWORD_REGEX = r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_#?!@$%^&*-]).{8,64}$"
 NAME_REGEX = r'^[A-Za-z]{1,50}$'
-@router.get("/users", dependencies=[Depends(HTTPBearer())], response_model=List[User], tags = ['Users'])
+@router.get("/users", dependencies=[Depends(auth.has_access)], response_model=List[User], tags = ['Users'])
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = user_services.get_users_service(db=db, skip=skip, limit=limit)
     return users
@@ -36,7 +40,7 @@ def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 '''
 get user based on given user_id
 '''
-@router.get("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User, tags = ['Users'])
+@router.get("/users/{user_id}", dependencies=[Depends(auth.has_access)], response_model=User, tags = ['Users'])
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
@@ -77,7 +81,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db),):
 '''
 update user data based on user_id, email can be changed
 '''
-@router.put("/users/{user_id}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201, tags = ['Users'])
+@router.put("/users/{user_id}", dependencies=[Depends(auth.has_access)], response_model=User, status_code=201, tags = ['Users'])
 def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_service(db=db, user_id=user_id)
     if db_user is None:
@@ -88,7 +92,7 @@ def update_user(user_id: int, user: UserCreate ,db: Session = Depends(get_db)):
 '''
 get user based on given email
 '''
-@router.get("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User, tags = ['Users']) # idk why I should change path rom /users to /user if somone can explain it would be nice
+@router.get("/user/{email}", dependencies=[Depends(auth.has_access)], response_model=User, tags = ['Users']) # idk why I should change path rom /users to /user if somone can explain it would be nice
 def get_email(email: str, db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
@@ -112,7 +116,7 @@ def get_email(email: str, db: Session = Depends(get_db)):
 '''
 update user data based on user_id, email can NOT be changed
 '''   
-@router.patch("/user/{email}", dependencies=[Depends(HTTPBearer())], response_model=User, status_code=201, tags = ['Users'])
+@router.patch("/user/{email}", dependencies=[Depends(auth.has_access)], response_model=User, status_code=201, tags = ['Users'])
 def update_user(email: str, user: dict ,db: Session = Depends(get_db)):
     db_user = user_services.get_user_by_email_service(db=db, email=email)
     if db_user is None:
@@ -171,3 +175,14 @@ async def password_check(form_data: UserAuth, db: Session = Depends(get_db)):
 def get_user_from_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     user = user_services.get_current_user_service(db, token)
     return user    
+
+"""
+API that defines which company users work for
+"""
+@router.post("/signup-company", status_code=201, tags = ['Users'])
+def add_company(company_name: str, token = Depends(auth.has_access),db: Session = Depends(get_db)):
+    db_company = user_company_services.get_company_by_name_service(db=db, name=company_name)
+    if db_company == None:
+        raise HTTPException(status_code=404, detail="Company does not exists")
+    user_company = user_services.add_company_service_post(db=db, user_id=token['user_id'], company_id=db_company.id)
+    return user_company

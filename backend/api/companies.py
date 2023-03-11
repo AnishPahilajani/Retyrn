@@ -53,15 +53,15 @@ def create_company(company: CreateCompany,token = Depends(auth.has_access) ,db: 
 '''
 get all companies
 '''
-@router.get("/companies", dependencies=[Depends(HTTPBearer())], response_model=List[Company], tags = ['Company'])
+@router.get("/companies", dependencies=[Depends(auth.has_access)], response_model=List[Company], tags = ['Company'])
 def get_companies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     companies = company_services.get_companies_service(db=db, skip=skip, limit=limit)
     return companies
   
 '''
-get all companies of specific user
+get company of user logged in
 '''
-@router.get("/companies-user", dependencies=[Depends(HTTPBearer())], response_model=List[Company], tags = ['Company'])
+@router.get("/companies-user", dependencies=[Depends(auth.has_access)], response_model=List[Company], tags = ['Company'])
 def get_companies_under_user(token = Depends(auth.has_access), db: Session = Depends(get_db)):
     companies = company_services.get_companies_under_a_user_service(db=db, user_id_FK=token['user_id'])
     return companies
@@ -69,7 +69,7 @@ def get_companies_under_user(token = Depends(auth.has_access), db: Session = Dep
 '''
 update company details
 '''
-@router.patch("/company/{name}", dependencies=[Depends(HTTPBearer())], response_model=Company, status_code=201, tags = ['Company'])
+@router.patch("/company/{name}", dependencies=[Depends(auth.has_access)], response_model=Company, status_code=201, tags = ['Company'])
 def update_company(name: str, company: dict ,token = Depends(auth.has_access), db: Session = Depends(get_db)):
     db_company = company_services.get_company_by_name_service(db=db, name=name)
     if db_company is None:
@@ -81,4 +81,16 @@ def update_company(name: str, company: dict ,token = Depends(auth.has_access), d
       raise HTTPException(status_code=422, detail="Cant change name of company")
     db.commit()
     db.refresh(db_company_updated)
-    return db_company_updated     
+    return db_company_updated 
+  
+'''
+Get all employees under a company
+'''
+@router.get("/company/{name}", dependencies=[Depends(auth.has_access)], response_model=List[User], status_code=200, tags = ['Company'])
+def get_employees(company_name: str, token = Depends(auth.has_access), db: Session = Depends(get_db)):
+  employee_ids = company_services.get_employees_of_company(db=db, name=company_name)
+  users = []
+  for employee_id in employee_ids:
+    user = company_user_services.get_user_service(db=db, user_id=employee_id.user_id)
+    users.append(user)
+  return(users)

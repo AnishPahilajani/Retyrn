@@ -41,6 +41,9 @@ class User(Timestamp, Base):
     truck_driver = relationship("TruckDriver", back_populates="truck_owner", uselist=False) # "owner" needs to be same name as TruckDriver table
     company_owner = relationship("Company", back_populates="owner", uselist=False)
     
+    #many to many realtion between User and Company
+    companies = relationship("UserCompanyRelation", back_populates="user")
+    
     
 class TruckDriver(Timestamp, Base):
     __tablename__ = "truck_drivers"

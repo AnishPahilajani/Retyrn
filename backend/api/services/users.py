@@ -9,6 +9,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from passlib.hash import bcrypt
 import jwt
+from database.models.company import Company, UserCompanyRelation
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 JWT_SECRET = '0850fa46da3812d64eaaaa47009db86b2b6105c1d996350cc12b0ce45edfcf08'
@@ -109,4 +110,13 @@ class UserServices:
             )
         return user
     
+    def add_company_service_post(self, db: Session, user_id: int, company_id:int):
+        db_user_company = UserCompanyRelation(
+                            user_id = user_id,
+                            company_id = company_id
+                        )
+        db.add(db_user_company)
+        db.commit()
+        db.refresh(db_user_company)
+        return db_user_company
 user_services = UserServices()
